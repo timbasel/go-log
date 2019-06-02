@@ -15,7 +15,7 @@ go get github.com/timbasel/go-log
 #### basic
 
 ```go
-import "github.com/timbasel/go-log"
+import log "github.com/timbasel/go-log/pkg"
 
 func main() {
   // message for the developer debugging the application
@@ -30,29 +30,20 @@ func main() {
 }
 ```
 
-the logging functions can handle different types of messages defined by a postfix identifier (e.g. `log.DebugE` for passing an error type or `log.InfoF` for a formatted string)
-
 #### configuration
 
 ```go
 import "github.com/timbasel/go-log"
 
 func main() {
-  // set the location(s) where the log is written to (default: os.Stdout)
-  log.SetOutput(os.Stdout, someIOWriter)
-
-  // CONCEPT: set the output format of the log (default: &log.DefaultFormatter{})
-  log.SetFormatter(&log.Formatter{})
+  // adds a location where the log is written to (by default os.Stdout is set)
+  log.SetOutput(os.Stdout)
+  
+  // adds a location with a custom formatter
+  log.SetFormattedOutput(os.Stdout, &log.CustomFormatter{})
 
   // set if debug messages should be logged (default: false)
   log.SetDebug(true)
-
-  // CONCEPT: set the list of packages/functions that should be excluded from debug logging (default: [])
-  log.SetDebugBlacklist("main.Hello")
-
-  // CONCEPT: set the list of packages/functions that should exclusivly have debug logging (default: [])
-  log.SetDebugBlacklist("main.World")
-}
 ```
 
 ## license
