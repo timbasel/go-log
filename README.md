@@ -33,7 +33,7 @@ func main() {
 #### configuration
 
 ```go
-import "github.com/timbasel/go-log"
+import log "github.com/timbasel/go-log/pkg"
 
 func main() {
   // adds a location where the log is written to (by default os.Stdout is set)
