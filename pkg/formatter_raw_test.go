@@ -16,9 +16,9 @@ func TestRawFormatter(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.Error, msg + "\n"},
-		{log.Info, msg + "\n"},
-		{log.Debug, msg + "\n"},
+		{log.ErrorLevel, msg + "\n"},
+		{log.InfoLevel, msg + "\n"},
+		{log.DebugLevel, msg + "\n"},
 	}
 
 	for _, testCase := range testCases {

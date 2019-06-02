@@ -4,12 +4,12 @@ package log
 type Level int
 
 const (
-	// Debug level is used for messages for the developer debugging the application
-	Debug Level = iota
-	// Info level is used for messages for the user running the application
-	Info
-	// Error level is used in case the application encountered an unhandleable error and will terminate after messaging
-	Error
+	// DebugLevel is used for messages for the developer debugging the application
+	DebugLevel Level = iota
+	// InfoLevel is used for messages for the user running the application
+	InfoLevel
+	// ErrorLevel is used in case the application encountered an unhandleable error and will terminate after messaging
+	ErrorLevel
 )
 
 // String returns the string name for a log level

@@ -21,9 +21,9 @@ type DefaultFormatter struct {
 func NewDefaultFormatter() (f *DefaultFormatter) {
 	return &DefaultFormatter{
 		Colors: map[Level]color.Style{
-			Debug: color.New(color.FgLightCyan),
-			Info:  color.New(color.FgLightWhite),
-			Error: color.New(color.FgLightRed),
+			DebugLevel: color.New(color.FgLightCyan),
+			InfoLevel:  color.New(color.FgLightWhite),
+			ErrorLevel: color.New(color.FgLightRed),
 		},
 		TimestampLayout: "2006-01-02 15:04:05",
 		Clock:           clock.New(),

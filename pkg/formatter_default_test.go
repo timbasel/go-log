@@ -30,9 +30,9 @@ func TestDefaultFormatter(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.Error, timestamp + " <" + caller + "> ERROR:\t" + msg + "\n"},
-		{log.Info, timestamp + " <" + caller + "> INFO:\t" + msg + "\n"},
-		{log.Debug, timestamp + " <" + caller + "> DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, timestamp + " <" + caller + "> ERROR:\t" + msg + "\n"},
+		{log.InfoLevel, timestamp + " <" + caller + "> INFO:\t" + msg + "\n"},
+		{log.DebugLevel, timestamp + " <" + caller + "> DEBUG:\t" + msg + "\n"},
 	}
 
 	for _, testCase := range testCases {
@@ -53,9 +53,9 @@ func TestDefaultFormatterDisabledTimestamp(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.Error, "<" + caller + "> ERROR:\t" + msg + "\n"},
-		{log.Info, "<" + caller + "> INFO:\t" + msg + "\n"},
-		{log.Debug, "<" + caller + "> DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, "<" + caller + "> ERROR:\t" + msg + "\n"},
+		{log.InfoLevel, "<" + caller + "> INFO:\t" + msg + "\n"},
+		{log.DebugLevel, "<" + caller + "> DEBUG:\t" + msg + "\n"},
 	}
 
 	for _, testCase := range testCases {
@@ -76,9 +76,9 @@ func TestDefaultFormatterDisabledCaller(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.Error, timestamp + " ERROR:\t" + msg + "\n"},
-		{log.Info, timestamp + " INFO:\t" + msg + "\n"},
-		{log.Debug, timestamp + " DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, timestamp + " ERROR:\t" + msg + "\n"},
+		{log.InfoLevel, timestamp + " INFO:\t" + msg + "\n"},
+		{log.DebugLevel, timestamp + " DEBUG:\t" + msg + "\n"},
 	}
 
 	for _, testCase := range testCases {
@@ -100,9 +100,9 @@ func TestDefaultFormatterCustomTimestamp(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.Error, timestamp + " <" + caller + "> ERROR:\t" + msg + "\n"},
-		{log.Info, timestamp + " <" + caller + "> INFO:\t" + msg + "\n"},
-		{log.Debug, timestamp + " <" + caller + "> DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, timestamp + " <" + caller + "> ERROR:\t" + msg + "\n"},
+		{log.InfoLevel, timestamp + " <" + caller + "> INFO:\t" + msg + "\n"},
+		{log.DebugLevel, timestamp + " <" + caller + "> DEBUG:\t" + msg + "\n"},
 	}
 
 	for _, testCase := range testCases {

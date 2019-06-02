@@ -60,18 +60,18 @@ func (logger *Logger) SetDebugMode(state bool) {
 
 // Error writes an error message to the log
 func (logger *Logger) Error(msg ...string) {
-	logger.write(Error, strings.Join(msg, " "))
+	logger.write(ErrorLevel, strings.Join(msg, " "))
 }
 
 // Info writes an info message to the log
 func (logger *Logger) Info(msg ...string) {
-	logger.write(Info, strings.Join(msg, " "))
+	logger.write(InfoLevel, strings.Join(msg, " "))
 }
 
 // Debug writes a debug message to the log
 func (logger *Logger) Debug(msg ...string) {
 	if logger.debugMode {
-		logger.write(Debug, strings.Join(msg, " "))
+		logger.write(DebugLevel, strings.Join(msg, " "))
 	}
 }
 
