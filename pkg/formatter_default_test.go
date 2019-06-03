@@ -38,7 +38,7 @@ func TestDefaultFormatter(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
 
@@ -61,7 +61,7 @@ func TestDefaultFormatterDisabledTimestamp(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
 
@@ -84,7 +84,7 @@ func TestDefaultFormatterDisabledCaller(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
 
@@ -108,6 +108,6 @@ func TestDefaultFormatterCustomTimestamp(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }

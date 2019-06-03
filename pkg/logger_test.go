@@ -33,7 +33,7 @@ func TestLogger(t *testing.T) {
 	for _, testCase := range testCases {
 		testCase.function(msg)
 
-		assert.Equal(t, output.String(), testCase.expected)
+		assert.Equal(t, testCase.expected, output.String())
 
 		output.Reset()
 	}
@@ -57,23 +57,23 @@ func TestLoggerEnabledDebugMode(t *testing.T) {
 	for _, testCase := range testCases {
 		testCase.function(msg)
 
-		assert.Equal(t, output.String(), testCase.expected)
+		assert.Equal(t, testCase.expected, output.String())
 
 		output.Reset()
 	}
 }
 
 func TestLoggerMultipleOutputs(t *testing.T) {
-	output1 := &strings.Builder{}
+	logger, output1 := prepareTestLogger()
 	output2 := &strings.Builder{}
-	logger := log.NewLogger()
+	logger.SetFormattedOutput(output2, log.NewRawFormatter())
+
 	msg := "this is a test message"
-	logger.ClearOutputs()
-	logger.SetOutput(output1)
-	logger.SetOutput(output2)
+	expected := msg + "\n"
 
 	logger.Info(msg)
 
-	assert.Contains(t, output1.String(), msg)
-	assert.Contains(t, output2.String(), msg)
+	assert.Equal(t, expected, output1.String())
+	assert.Equal(t, expected, output2.String())
+}
 }

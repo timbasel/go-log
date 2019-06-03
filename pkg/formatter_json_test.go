@@ -39,7 +39,7 @@ func TestJSONFormatter(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
 
@@ -64,7 +64,7 @@ func TestJSONFormatterDisabledTimestamp(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
 
@@ -88,7 +88,7 @@ func TestJSONFormatterDisabledCaller(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
 
@@ -114,6 +114,6 @@ func TestJSONFormatterPrettyPrint(t *testing.T) {
 	for _, testCase := range testCases {
 		formattedMsg := formatter.Format(testCase.level, msg)
 
-		assert.Equal(t, formattedMsg, testCase.expected)
+		assert.Equal(t, testCase.expected, formattedMsg)
 	}
 }
