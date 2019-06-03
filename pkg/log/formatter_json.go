@@ -21,6 +21,7 @@ type JSONFormatter struct {
 func NewJSONFormatter() (f *JSONFormatter) {
 	return &JSONFormatter{
 		TimestampLayout: time.RFC3339,
+		Clock:           clock.New(),
 	}
 }
 

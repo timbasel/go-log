@@ -2,7 +2,7 @@ package log
 
 import "io"
 
-var defaultLogger = NewLogger()
+var defaultLogger = NewDefaultLogger()
 
 // SetOutputs adds the provided io.Writers to the output of the default logger using the default formatter
 func SetOutputs(output ...io.Writer) {
@@ -12,6 +12,11 @@ func SetOutputs(output ...io.Writer) {
 // SetFormattedOutputs adds the provided io.Writer to the output of the default logger using the provided formatter
 func SetFormattedOutputs(outputs map[io.Writer]Formatter) {
 	defaultLogger.SetFormattedOutputs(outputs)
+}
+
+// SetDebugMode toggles if debug messages are written to the default loggers outputs
+func SetDebugMode(state bool) {
+	defaultLogger.SetDebugMode(state)
 }
 
 // ClearOutputs removes all outputs from the default logger

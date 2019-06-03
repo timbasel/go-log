@@ -2,6 +2,8 @@
 
 # log
 
+[![Build Status](https://ci.basel.digital/api/badges/timbasel/go-log/status.svg)](https://ci.basel.digital/timbasel/go-log)
+
 a simple logging library for Go inspired by Dave Cheney's [Let's talk about logging](https://dave.cheney.net/2015/11/05/lets-talk-about-logging) blog post.
 
 ## installation
@@ -15,7 +17,7 @@ go get github.com/timbasel/go-log
 #### basic
 
 ```go
-import log "github.com/timbasel/go-log/pkg"
+import "github.com/timbasel/go-log/pkg/log"
 
 func main() {
   // message for the developer debugging the application
@@ -33,17 +35,73 @@ func main() {
 #### configuration
 
 ```go
-import log "github.com/timbasel/go-log/pkg"
+import "github.com/timbasel/go-log/pkg/log"
 
 func main() {
-  // adds a location where the log is written to (by default os.Stdout is set)
-  log.SetOutput(os.Stdout)
-  
-  // adds a location with a custom formatter
-  log.SetFormattedOutput(os.Stdout, &log.CustomFormatter{})
+  // adds locations where the log is written to (by default os.Stdout is set)
+  log.SetOutputs(os.Stdout)
+
+  // adds locations with a custom formatter
+  log.SetFormattedOutputs(map[io.Writer]log.Formatter{os.Stdout: log.NewRawFormatter()})
 
   // set if debug messages should be logged (default: false)
-  log.SetDebug(true)
+  log.SetDebugMode(true)
+
+  // blacklist or whitelist functions and packages from debug output
+  log.BlacklistFunctions("main")
+  log.WhitelistPackages("github.com/username/project")
+
+  // remove entries from blacklist or whitelist
+  log.ClearBlacklist()
+}
+```
+
+#### logger
+
+```go
+import "github.com/timbasel/go-log/pkg/log"
+
+func main() {
+  logger := log.NewDefaultLogger()
+
+  logger.ClearOutputs()
+  logger.SetOutputs(os.Stderr)
+
+  logger.Info("Hello World")
+}
+```
+
+#### formatters
+
+```go
+import "github.com/timbasel/go-log/pkg/log"
+
+type CustomFormatter struct{}
+
+func (f *CustomFormatter) Format(level log.Level, msg string) (formattedMsg string) {
+  return "> " + msg + " [" + level.String() + "]\n"
+}
+
+func ExampleFormatters() {
+  logger := log.NewLogger()
+  logger.SetDebugMode(true)
+
+  file, _ := ioutil.TempFile("/tmp/", "log_*.json")
+  logger.SetFormattedOutputs(map[io.Writer]log.Formatter{
+    os.Stdout: &CustomFormatter{},
+    os.Stderr: log.NewDefaultFormatter(),
+    file:      log.NewJSONFormatter(),
+  })
+
+  logger.Debug("Hello World")
+
+  // output to stdout:
+  //    > Hello World [DEBUG]
+  // output to stderr:
+  //    2019-06-03 17:24:10 <log_test.ExampleFormatters> DEBUG: Hello World
+  // output to temporary file:
+  //    {"function":"ExampleFormatters","level":"DEBUG","msg":"Hello World","package":"github.com/timbasel/go-log/pkg/log_test","time":"2019-06-03T17:23:17+02:00"}
+}
 ```
 
 ## license

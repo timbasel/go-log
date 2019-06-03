@@ -14,21 +14,28 @@ type Logger struct {
 	outputs map[io.Writer]Formatter
 
 	debugMode          bool
-	blacklistPackages  []string
 	blacklistFunctions []string
-	whitelistPackages  []string
+	blacklistPackages  []string
 	whitelistFunctions []string
+	whitelistPackages  []string
 }
 
-// NewLogger initializes a new logger.
-// By default the logger will print its output the stdout console using the default formatter
+// NewLogger initializes a new empty logger with no outputs configured
 func NewLogger() (logger *Logger) {
 	return &Logger{
-		outputs: map[io.Writer]Formatter{
-			os.Stdout: NewDefaultFormatter(),
-		},
-		debugMode: false,
+		outputs:            map[io.Writer]Formatter{},
+		blacklistFunctions: []string{},
+		blacklistPackages:  []string{},
+		whitelistFunctions: []string{},
+		whitelistPackages:  []string{},
 	}
+}
+
+// NewDefaultLogger initializes a new logger configured to write its output to the stdout console using the default formatter
+func NewDefaultLogger() (logger *Logger) {
+	logger = NewLogger()
+	logger.SetOutputs(os.Stdout)
+	return logger
 }
 
 // SetOutputs adds the provided io.Writers to the loggers outputs using the default formatter
@@ -59,7 +66,7 @@ func (logger *Logger) ClearOutputs() {
 	logger.outputs = map[io.Writer]Formatter{}
 }
 
-// SetDebugMode toggles if debug messages should be written to the log outputs
+// SetDebugMode toggles if debug messages are written to the loggers outputs
 func (logger *Logger) SetDebugMode(state bool) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
