@@ -31,20 +31,24 @@ func NewLogger() (logger *Logger) {
 	}
 }
 
-// SetOutput adds the provided io.Writer to the loggers outputs using the default formatter
-func (logger *Logger) SetOutput(output io.Writer) {
+// SetOutputs adds the provided io.Writers to the loggers outputs using the default formatter
+func (logger *Logger) SetOutputs(outputs ...io.Writer) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.outputs[output] = NewDefaultFormatter()
+	for _, output := range outputs {
+		logger.outputs[output] = NewDefaultFormatter()
+	}
 }
 
-// SetFormattedOutput adds the provided io.Writer to the loggers outputs with the provided formatter
-func (logger *Logger) SetFormattedOutput(output io.Writer, formatter Formatter) {
+// SetFormattedOutputs adds the provided io.Writers to the loggers outputs with the provided custom formatters
+func (logger *Logger) SetFormattedOutputs(outputs map[io.Writer]Formatter) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.outputs[output] = formatter
+	for writer, formatter := range outputs {
+		logger.outputs[writer] = formatter
+	}
 }
 
 // ClearOutputs removes all set outputs from the logger
@@ -63,20 +67,24 @@ func (logger *Logger) SetDebugMode(state bool) {
 	logger.debugMode = state
 }
 
-// BlacklistFunction adds the provided function name to the loggers blacklist for debug output
-func (logger *Logger) BlacklistFunction(name string) {
+// BlacklistFunctions adds the provided function names to the loggers debug output blacklist
+func (logger *Logger) BlacklistFunctions(names ...string) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.blacklistFunctions = append(logger.blacklistFunctions, name)
+	for _, name := range names {
+		logger.blacklistFunctions = append(logger.blacklistFunctions, name)
+	}
 }
 
-// BlacklistPackage adds the provided package name to the loggers blacklist for debug output
-func (logger *Logger) BlacklistPackage(name string) {
+// BlacklistPackages adds the provided package names to the loggers debug output blacklist
+func (logger *Logger) BlacklistPackages(names ...string) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.blacklistPackages = append(logger.blacklistPackages, name)
+	for _, name := range names {
+		logger.blacklistPackages = append(logger.blacklistPackages, name)
+	}
 }
 
 // ClearBlacklist removes all entries from the loggers blacklist
@@ -88,20 +96,24 @@ func (logger *Logger) ClearBlacklist() {
 	logger.blacklistPackages = []string{}
 }
 
-// WhitelistFunction adds the provided function name to the loggers debug output whitelist
-func (logger *Logger) WhitelistFunction(name string) {
+// WhitelistFunctions adds the provided function names to the loggers debug output whitelist
+func (logger *Logger) WhitelistFunctions(names ...string) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.whitelistFunctions = append(logger.whitelistFunctions, name)
+	for _, name := range names {
+		logger.whitelistFunctions = append(logger.whitelistFunctions, name)
+	}
 }
 
-// WhitelistPackage adds the provided package name to the loggers whitelist for debug output
-func (logger *Logger) WhitelistPackage(name string) {
+// WhitelistPackages adds the provided package name to the loggers debug output whitelist
+func (logger *Logger) WhitelistPackages(names ...string) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.whitelistPackages = append(logger.whitelistPackages, name)
+	for _, name := range names {
+		logger.whitelistPackages = append(logger.whitelistPackages, name)
+	}
 }
 
 // ClearWhitelist removes all entries from the loggers whitelist

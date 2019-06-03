@@ -1,6 +1,7 @@
 package log_test
 
 import (
+	"io"
 	"strings"
 	"testing"
 
@@ -12,7 +13,7 @@ func prepareTestLogger() (logger *log.Logger, output *strings.Builder) {
 	output = &strings.Builder{}
 	logger = log.NewLogger()
 	logger.ClearOutputs()
-	logger.SetFormattedOutput(output, log.NewRawFormatter())
+	logger.SetFormattedOutputs(map[io.Writer]log.Formatter{output: log.NewRawFormatter()})
 	return logger, output
 }
 
@@ -66,7 +67,7 @@ func TestLoggerEnabledDebugMode(t *testing.T) {
 func TestLoggerMultipleOutputs(t *testing.T) {
 	logger, output1 := prepareTestLogger()
 	output2 := &strings.Builder{}
-	logger.SetFormattedOutput(output2, log.NewRawFormatter())
+	logger.SetFormattedOutputs(map[io.Writer]log.Formatter{output2: log.NewRawFormatter()})
 
 	msg := "this is a test message"
 	expected := msg + "\n"
@@ -84,19 +85,19 @@ func TestLoggerBlacklist(t *testing.T) {
 	msg := "this is a test message"
 	expected := msg + "\n"
 
-	logger.BlacklistFunction("TestLoggerBlacklist")
+	logger.BlacklistFunctions("TestLoggerBlacklist")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()
 
 	logger.ClearBlacklist()
-	logger.BlacklistPackage("log_test")
+	logger.BlacklistPackages("log_test")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()
 
 	logger.ClearBlacklist()
-	logger.BlacklistPackage("github.com/timbasel/go-log/pkg/log_test")
+	logger.BlacklistPackages("github.com/timbasel/go-log/pkg/log_test")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()
@@ -118,25 +119,25 @@ func TestLoggerWhitelist(t *testing.T) {
 	assert.Equal(t, expected, output.String())
 	output.Reset()
 
-	logger.WhitelistFunction("TestLoggerWhitelist")
+	logger.WhitelistFunctions("TestLoggerWhitelist")
 	logger.Debug(msg)
 	assert.Equal(t, expected, output.String())
 	output.Reset()
 
 	logger.ClearWhitelist()
-	logger.WhitelistFunction("TestAnotherFunction")
+	logger.WhitelistFunctions("TestAnotherFunction")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()
 
 	logger.ClearWhitelist()
-	logger.WhitelistPackage("github.com/timbasel/go-log/pkg/log_test")
+	logger.WhitelistPackages("github.com/timbasel/go-log/pkg/log_test")
 	logger.Debug(msg)
 	assert.Equal(t, expected, output.String())
 	output.Reset()
 
 	logger.ClearWhitelist()
-	logger.WhitelistPackage("github.com/timbasel/go-log/pkg/another_pkg")
+	logger.WhitelistPackages("github.com/timbasel/go-log/pkg/another_pkg")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()
@@ -153,8 +154,8 @@ func TestLoggerBlacklistAndWhitelist(t *testing.T) {
 	assert.Equal(t, expected, output.String())
 	output.Reset()
 
-	logger.WhitelistFunction("TestLoggerBlacklistAndWhitelist")
-	logger.BlacklistFunction("TestLoggerBlacklistAndWhitelist")
+	logger.WhitelistFunctions("TestLoggerBlacklistAndWhitelist")
+	logger.BlacklistFunctions("TestLoggerBlacklistAndWhitelist")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()
@@ -166,8 +167,8 @@ func TestLoggerBlacklistAndWhitelist(t *testing.T) {
 
 	logger.ClearBlacklist()
 	logger.ClearWhitelist()
-	logger.WhitelistPackage("github.com/timbasel/go-log/pkg/log")
-	logger.BlacklistPackage("github.com/timbasel/go-log/pkg/log")
+	logger.WhitelistPackages("github.com/timbasel/go-log/pkg/log")
+	logger.BlacklistPackages("github.com/timbasel/go-log/pkg/log")
 	logger.Debug(msg)
 	assert.Equal(t, "", output.String())
 	output.Reset()

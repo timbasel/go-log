@@ -4,19 +4,49 @@ import "io"
 
 var defaultLogger = NewLogger()
 
-// SetOutput adds the provided io.Writer to the output of the default logger using the default formatter
-func SetOutput(output io.Writer) {
-	defaultLogger.SetOutput(output)
+// SetOutputs adds the provided io.Writers to the output of the default logger using the default formatter
+func SetOutputs(output ...io.Writer) {
+	defaultLogger.SetOutputs(output...)
 }
 
-// SetFormattedOutput adds the provided io.Writer to the output of the default logger using the provided formatter
-func SetFormattedOutput(output io.Writer, formatter Formatter) {
-	defaultLogger.SetFormattedOutput(output, formatter)
+// SetFormattedOutputs adds the provided io.Writer to the output of the default logger using the provided formatter
+func SetFormattedOutputs(outputs map[io.Writer]Formatter) {
+	defaultLogger.SetFormattedOutputs(outputs)
 }
 
 // ClearOutputs removes all outputs from the default logger
 func ClearOutputs() {
 	defaultLogger.ClearOutputs()
+}
+
+// BlacklistFunctions adds the provided function names to the default loggers debug output blacklist
+func BlacklistFunctions(names ...string) {
+	defaultLogger.BlacklistFunctions(names...)
+}
+
+// BlacklistPackages adds the provided package names to the default loggers debug output blacklist
+func BlacklistPackages(names ...string) {
+	defaultLogger.BlacklistPackages(names...)
+}
+
+// ClearBlacklist removes all entries from the default loggers blacklist
+func ClearBlacklist() {
+	defaultLogger.ClearBlacklist()
+}
+
+// WhitelistFunctions adds the provided function names to the default loggers debug output whitelist
+func WhitelistFunctions(names ...string) {
+	defaultLogger.WhitelistFunctions(names...)
+}
+
+// WhitelistPackages adds the provided package name to the default loggers debug output whitelist
+func WhitelistPackages(names ...string) {
+	defaultLogger.WhitelistPackages(names...)
+}
+
+// ClearWhitelist removes all entries from the loggers whitelist
+func ClearWhitelist() {
+	defaultLogger.ClearWhitelist()
 }
 
 // Error writes an error message to the default log
