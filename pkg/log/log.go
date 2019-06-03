@@ -2,84 +2,84 @@ package log
 
 import "io"
 
-var defaultLogger = NewDefaultLogger()
+var globalLogger = NewDefaultLogger()
 
-// SetOutputs adds the provided io.Writers to the output of the default logger using the default formatter
+// SetOutputs adds the provided io.Writers to the output of the global logger using the global formatter
 func SetOutputs(output ...io.Writer) {
-	defaultLogger.SetOutputs(output...)
+	globalLogger.SetOutputs(output...)
 }
 
-// SetFormattedOutputs adds the provided io.Writer to the output of the default logger using the provided formatter
+// SetFormattedOutputs adds the provided io.Writer to the output of the global logger using the provided formatter
 func SetFormattedOutputs(outputs map[io.Writer]Formatter) {
-	defaultLogger.SetFormattedOutputs(outputs)
+	globalLogger.SetFormattedOutputs(outputs)
 }
 
-// SetDebugMode toggles if debug messages are written to the default loggers outputs
+// SetDebugMode toggles if debug messages are written to the global loggers outputs
 func SetDebugMode(state bool) {
-	defaultLogger.SetDebugMode(state)
+	globalLogger.SetDebugMode(state)
 }
 
-// ClearOutputs removes all outputs from the default logger
+// ClearOutputs removes all outputs from the global logger
 func ClearOutputs() {
-	defaultLogger.ClearOutputs()
+	globalLogger.ClearOutputs()
 }
 
-// BlacklistFunctions adds the provided function names to the default loggers debug output blacklist
+// BlacklistFunctions adds the provided function names to the global loggers debug output blacklist
 func BlacklistFunctions(names ...string) {
-	defaultLogger.BlacklistFunctions(names...)
+	globalLogger.BlacklistFunctions(names...)
 }
 
-// BlacklistPackages adds the provided package names to the default loggers debug output blacklist
+// BlacklistPackages adds the provided package names to the global loggers debug output blacklist
 func BlacklistPackages(names ...string) {
-	defaultLogger.BlacklistPackages(names...)
+	globalLogger.BlacklistPackages(names...)
 }
 
-// ClearBlacklist removes all entries from the default loggers blacklist
+// ClearBlacklist removes all entries from the global loggers blacklist
 func ClearBlacklist() {
-	defaultLogger.ClearBlacklist()
+	globalLogger.ClearBlacklist()
 }
 
-// WhitelistFunctions adds the provided function names to the default loggers debug output whitelist
+// WhitelistFunctions adds the provided function names to the global loggers debug output whitelist
 func WhitelistFunctions(names ...string) {
-	defaultLogger.WhitelistFunctions(names...)
+	globalLogger.WhitelistFunctions(names...)
 }
 
-// WhitelistPackages adds the provided package name to the default loggers debug output whitelist
+// WhitelistPackages adds the provided package name to the global loggers debug output whitelist
 func WhitelistPackages(names ...string) {
-	defaultLogger.WhitelistPackages(names...)
+	globalLogger.WhitelistPackages(names...)
 }
 
-// ClearWhitelist removes all entries from the loggers whitelist
+// ClearWhitelist removes all entries from the global loggers whitelist
 func ClearWhitelist() {
-	defaultLogger.ClearWhitelist()
+	globalLogger.ClearWhitelist()
 }
 
-// Error writes an error message to the default log
+// Error writes an error message to the global log
 func Error(msg ...string) {
-	defaultLogger.Error(msg...)
+	globalLogger.Error(msg...)
 }
 
-// Errorf writes a formatted error message to the default log
+// Errorf writes a formatted error message to the global log
 func Errorf(format string, arguments ...interface{}) {
-	defaultLogger.Errorf(format, arguments...)
+	globalLogger.Errorf(format, arguments...)
 }
 
-// Info writes an info message to the default log
+// Info writes an info message to the global log
 func Info(msg ...string) {
-	defaultLogger.Info(msg...)
+	globalLogger.Info(msg...)
 }
 
-// Infof writes a formatted error message to the default log
+// Infof writes a formatted error message to the global log
 func Infof(format string, arguments ...interface{}) {
-	defaultLogger.Infof(format, arguments...)
+	globalLogger.Infof(format, arguments...)
 }
 
-// Debug writes a debug message to the default log
+// Debug writes a debug message to the global log
 func Debug(msg ...string) {
-	defaultLogger.Debug(msg...)
+	globalLogger.Debug(msg...)
 }
 
-// Debugf writes a formatted error message to the default log
+// Debugf writes a formatted error message to the global log
 func Debugf(format string, arguments ...interface{}) {
-	defaultLogger.Debugf(format, arguments...)
+	globalLogger.Debugf(format, arguments...)
 }
