@@ -11,8 +11,11 @@ import (
 type Logger struct {
 	mutex sync.Mutex
 
-	outputs   map[io.Writer]Formatter
+	outputs map[io.Writer]Formatter
+
 	debugMode bool
+	blacklist []string
+	whitelist []string
 }
 
 // NewLogger initializes a new logger.
@@ -58,6 +61,38 @@ func (logger *Logger) SetDebugMode(state bool) {
 	logger.debugMode = state
 }
 
+// SetBlacklist adds the provided function/package name entry to the loggers blacklist for debug output
+func (logger *Logger) SetBlacklist(entry string) {
+	logger.mutex.Lock()
+	defer logger.mutex.Unlock()
+
+	logger.blacklist = append(logger.blacklist, entry)
+}
+
+// ClearBlacklist removes all entries from the loggers blacklist
+func (logger *Logger) ClearBlacklist() {
+	logger.mutex.Lock()
+	defer logger.mutex.Unlock()
+
+	logger.blacklist = []string{}
+}
+
+// SetWhitelist adds the provided function/package name entry to the loggers whitelist for debug output
+func (logger *Logger) SetWhitelist(entry string) {
+	logger.mutex.Lock()
+	defer logger.mutex.Unlock()
+
+	logger.whitelist = append(logger.whitelist, entry)
+}
+
+// ClearWhitelist removes all entries from the loggers whitelist
+func (logger *Logger) ClearWhitelist() {
+	logger.mutex.Lock()
+	defer logger.mutex.Unlock()
+
+	logger.whitelist = []string{}
+}
+
 // Error writes an error message to the log
 func (logger *Logger) Error(msg ...string) {
 	logger.write(ErrorLevel, strings.Join(msg, " "))
@@ -71,7 +106,10 @@ func (logger *Logger) Info(msg ...string) {
 // Debug writes a debug message to the log
 func (logger *Logger) Debug(msg ...string) {
 	if logger.debugMode {
-		logger.write(DebugLevel, strings.Join(msg, " "))
+		caller := getCallersFullFunctionName()
+		if logger.isWhitelisted(caller) && !logger.isBlacklisted(caller) {
+			logger.write(DebugLevel, strings.Join(msg, " "))
+		}
 	}
 }
 
@@ -79,4 +117,26 @@ func (logger *Logger) write(level Level, msg string) {
 	for writer, formatter := range logger.outputs {
 		writer.Write([]byte(formatter.Format(level, msg)))
 	}
+}
+
+func (logger *Logger) isBlacklisted(caller string) bool {
+	for _, entry := range logger.blacklist {
+		if strings.Contains(caller, entry) {
+			return true
+		}
+	}
+	return false
+}
+
+func (logger *Logger) isWhitelisted(caller string) bool {
+	if len(logger.whitelist) < 1 {
+		return true
+	}
+
+	for _, entry := range logger.whitelist {
+		if strings.Contains(caller, entry) {
+			return true
+		}
+	}
+	return false
 }

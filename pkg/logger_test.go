@@ -76,4 +76,47 @@ func TestLoggerMultipleOutputs(t *testing.T) {
 	assert.Equal(t, expected, output1.String())
 	assert.Equal(t, expected, output2.String())
 }
+
+func TestLoggerBlacklist(t *testing.T) {
+	logger, output := prepareTestLogger()
+	logger.SetDebugMode(true)
+
+	msg := "this is a test message"
+	expected := msg + "\n"
+
+	logger.Debug(msg)
+	assert.Equal(t, expected, output.String())
+	output.Reset()
+
+	logger.SetBlacklist("TestLoggerBlacklist")
+	logger.Debug(msg)
+	assert.Equal(t, "", output.String())
+	output.Reset()
+
+	logger.ClearBlacklist()
+	logger.Debug(msg)
+	assert.Equal(t, expected, output.String())
+	output.Reset()
+}
+
+func TestLoggerWhitelist(t *testing.T) {
+	logger, output := prepareTestLogger()
+	logger.SetDebugMode(true)
+
+	msg := "this is a test message"
+	expected := msg + "\n"
+
+	logger.Debug(msg)
+	assert.Equal(t, expected, output.String())
+	output.Reset()
+
+	logger.SetWhitelist("TestLoggerBlacklist")
+	logger.Debug(msg)
+	assert.Equal(t, "", output.String())
+	output.Reset()
+
+	logger.SetWhitelist("TestLoggerWhitelist")
+	logger.Debug(msg)
+	assert.Equal(t, expected, output.String())
+	output.Reset()
 }
