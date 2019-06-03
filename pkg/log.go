@@ -26,7 +26,7 @@ func Error(msg ...string) {
 
 // Info writes an info message to the default log
 func Info(msg ...string) {
-	defaultLogger.Error(msg...)
+	defaultLogger.Info(msg...)
 }
 
 // Debug writes a debug message to the default log
