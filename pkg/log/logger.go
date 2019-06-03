@@ -13,9 +13,11 @@ type Logger struct {
 
 	outputs map[io.Writer]Formatter
 
-	debugMode bool
-	blacklist []string
-	whitelist []string
+	debugMode          bool
+	blacklistPackages  []string
+	blacklistFunctions []string
+	whitelistPackages  []string
+	whitelistFunctions []string
 }
 
 // NewLogger initializes a new logger.
@@ -61,12 +63,20 @@ func (logger *Logger) SetDebugMode(state bool) {
 	logger.debugMode = state
 }
 
-// SetBlacklist adds the provided function/package name entry to the loggers blacklist for debug output
-func (logger *Logger) SetBlacklist(entry string) {
+// BlacklistFunction adds the provided function name to the loggers blacklist for debug output
+func (logger *Logger) BlacklistFunction(name string) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.blacklist = append(logger.blacklist, entry)
+	logger.blacklistFunctions = append(logger.blacklistFunctions, name)
+}
+
+// BlacklistPackage adds the provided package name to the loggers blacklist for debug output
+func (logger *Logger) BlacklistPackage(name string) {
+	logger.mutex.Lock()
+	defer logger.mutex.Unlock()
+
+	logger.blacklistPackages = append(logger.blacklistPackages, name)
 }
 
 // ClearBlacklist removes all entries from the loggers blacklist
@@ -74,15 +84,24 @@ func (logger *Logger) ClearBlacklist() {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.blacklist = []string{}
+	logger.blacklistFunctions = []string{}
+	logger.blacklistPackages = []string{}
 }
 
-// SetWhitelist adds the provided function/package name entry to the loggers whitelist for debug output
-func (logger *Logger) SetWhitelist(entry string) {
+// WhitelistFunction adds the provided function name to the loggers debug output whitelist
+func (logger *Logger) WhitelistFunction(name string) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.whitelist = append(logger.whitelist, entry)
+	logger.whitelistFunctions = append(logger.whitelistFunctions, name)
+}
+
+// WhitelistPackage adds the provided package name to the loggers whitelist for debug output
+func (logger *Logger) WhitelistPackage(name string) {
+	logger.mutex.Lock()
+	defer logger.mutex.Unlock()
+
+	logger.whitelistPackages = append(logger.whitelistPackages, name)
 }
 
 // ClearWhitelist removes all entries from the loggers whitelist
@@ -90,7 +109,8 @@ func (logger *Logger) ClearWhitelist() {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
 
-	logger.whitelist = []string{}
+	logger.whitelistFunctions = []string{}
+	logger.whitelistPackages = []string{}
 }
 
 // Error writes an error message to the log
@@ -106,8 +126,7 @@ func (logger *Logger) Info(msg ...string) {
 // Debug writes a debug message to the log
 func (logger *Logger) Debug(msg ...string) {
 	if logger.debugMode {
-		caller := getCallersFullFunctionName()
-		if logger.isWhitelisted(caller) && !logger.isBlacklisted(caller) {
+		if logger.isWhitelisted() && !logger.isBlacklisted() {
 			logger.write(DebugLevel, strings.Join(msg, " "))
 		}
 	}
@@ -119,22 +138,34 @@ func (logger *Logger) write(level Level, msg string) {
 	}
 }
 
-func (logger *Logger) isBlacklisted(caller string) bool {
-	for _, entry := range logger.blacklist {
-		if strings.Contains(caller, entry) {
+func (logger *Logger) isBlacklisted() bool {
+	functionListed := searchFunctionList(logger.blacklistFunctions, getCallersFunctionName())
+	packageListed := searchPackageList(logger.blacklistPackages, getCallersPackageName())
+	return functionListed || packageListed
+}
+
+func (logger *Logger) isWhitelisted() bool {
+	if len(logger.whitelistFunctions) < 1 && len(logger.whitelistPackages) < 1 {
+		return true
+	}
+
+	functionListed := searchFunctionList(logger.whitelistFunctions, getCallersFunctionName())
+	packageListed := searchPackageList(logger.whitelistPackages, getCallersPackageName())
+	return functionListed || packageListed
+}
+
+func searchFunctionList(list []string, name string) bool {
+	for _, item := range list {
+		if item == name {
 			return true
 		}
 	}
 	return false
 }
 
-func (logger *Logger) isWhitelisted(caller string) bool {
-	if len(logger.whitelist) < 1 {
-		return true
-	}
-
-	for _, entry := range logger.whitelist {
-		if strings.Contains(caller, entry) {
+func searchPackageList(list []string, name string) bool {
+	for _, item := range list {
+		if strings.HasPrefix(name, item) || strings.HasSuffix(name, item) {
 			return true
 		}
 	}
