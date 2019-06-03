@@ -59,12 +59,27 @@ func Error(msg ...string) {
 	defaultLogger.Error(msg...)
 }
 
+// Errorf writes a formatted error message to the default log
+func Errorf(format string, arguments ...interface{}) {
+	defaultLogger.Errorf(format, arguments...)
+}
+
 // Info writes an info message to the default log
 func Info(msg ...string) {
 	defaultLogger.Info(msg...)
 }
 
+// Infof writes a formatted error message to the default log
+func Infof(format string, arguments ...interface{}) {
+	defaultLogger.Infof(format, arguments...)
+}
+
 // Debug writes a debug message to the default log
 func Debug(msg ...string) {
 	defaultLogger.Debug(msg...)
+}
+
+// Debugf writes a formatted error message to the default log
+func Debugf(format string, arguments ...interface{}) {
+	defaultLogger.Debugf(format, arguments...)
 }

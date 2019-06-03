@@ -1,6 +1,7 @@
 package log
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -137,9 +138,19 @@ func (logger *Logger) Error(msg ...string) {
 	logger.write(ErrorLevel, strings.Join(msg, " "))
 }
 
+// Errorf writes a formatted error message to the log
+func (logger *Logger) Errorf(format string, arguments ...interface{}) {
+	logger.write(ErrorLevel, fmt.Sprintf(format, arguments...))
+}
+
 // Info writes an info message to the log
 func (logger *Logger) Info(msg ...string) {
 	logger.write(InfoLevel, strings.Join(msg, " "))
+}
+
+// Infof writes a formatted info message to the log
+func (logger *Logger) Infof(format string, arguments ...interface{}) {
+	logger.write(InfoLevel, fmt.Sprintf(format, arguments...))
 }
 
 // Debug writes a debug message to the log
@@ -147,6 +158,15 @@ func (logger *Logger) Debug(msg ...string) {
 	if logger.debugMode {
 		if logger.isWhitelisted() && !logger.isBlacklisted() {
 			logger.write(DebugLevel, strings.Join(msg, " "))
+		}
+	}
+}
+
+// Debugf writes a formatted debug message to the log
+func (logger *Logger) Debugf(format string, arguments ...interface{}) {
+	if logger.debugMode {
+		if logger.isWhitelisted() && !logger.isBlacklisted() {
+			logger.write(DebugLevel, fmt.Sprintf(format, arguments...))
 		}
 	}
 }
