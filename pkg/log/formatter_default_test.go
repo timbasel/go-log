@@ -7,7 +7,7 @@ import (
 	"github.com/benbjohnson/clock"
 	"github.com/stretchr/testify/assert"
 
-	log "github.com/timbasel/go-log/pkg"
+	"github.com/timbasel/go-log/pkg/log"
 )
 
 func prepareTestDefaultFormatter() (formatter *log.DefaultFormatter) {
@@ -25,7 +25,7 @@ func TestDefaultFormatter(t *testing.T) {
 
 	msg := "this is a test message"
 	timestamp := "2006-01-02 15:04:05"
-	caller := "pkg_test.TestDefaultFormatter"
+	caller := "log_test.TestDefaultFormatter"
 
 	testCases := []struct {
 		level    log.Level
@@ -48,7 +48,7 @@ func TestDefaultFormatterDisabledTimestamp(t *testing.T) {
 	formatter.TimestampDisabled = true
 
 	msg := "this is a test message"
-	caller := "pkg_test.TestDefaultFormatterDisabledTimestamp"
+	caller := "log_test.TestDefaultFormatterDisabledTimestamp"
 
 	testCases := []struct {
 		level    log.Level
@@ -94,7 +94,7 @@ func TestDefaultFormatterCustomTimestamp(t *testing.T) {
 	formatter.TimestampLayout = "Mon Jan 02 15:04:05 2006"
 
 	msg := "this is a test message"
-	caller := "pkg_test.TestDefaultFormatterCustomTimestamp"
+	caller := "log_test.TestDefaultFormatterCustomTimestamp"
 	timestamp := "Mon Jan 02 15:04:05 2006"
 
 	testCases := []struct {

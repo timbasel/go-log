@@ -7,7 +7,7 @@ import (
 
 	"github.com/benbjohnson/clock"
 	"github.com/stretchr/testify/assert"
-	log "github.com/timbasel/go-log/pkg"
+	"github.com/timbasel/go-log/pkg/log"
 )
 
 func prepareTestJSONFormatter() (formatter *log.JSONFormatter) {
@@ -24,7 +24,7 @@ func TestJSONFormatter(t *testing.T) {
 
 	msg := "this is a test message"
 	timestamp := "2006-01-02T15:04:05Z"
-	packageName := "github.com/timbasel/go-log/pkg_test"
+	packageName := "github.com/timbasel/go-log/pkg/log_test"
 	functionName := "TestJSONFormatter"
 	expectedFormat := "{\"function\":\"%s\",\"level\":\"%s\",\"msg\":\"%s\",\"package\":\"%s\",\"time\":\"%s\"}\n"
 
@@ -49,7 +49,7 @@ func TestJSONFormatterDisabledTimestamp(t *testing.T) {
 	formatter.TimestampDisabled = true
 
 	msg := "this is a test message"
-	packageName := "github.com/timbasel/go-log/pkg_test"
+	packageName := "github.com/timbasel/go-log/pkg/log_test"
 	functionName := "TestJSONFormatterDisabledTimestamp"
 	expectedFormat := "{\"function\":\"%s\",\"level\":\"%s\",\"msg\":\"%s\",\"package\":\"%s\"}\n"
 
@@ -99,7 +99,7 @@ func TestJSONFormatterPrettyPrint(t *testing.T) {
 
 	msg := "this is a test message"
 	timestamp := "2006-01-02T15:04:05Z"
-	packageName := "github.com/timbasel/go-log/pkg_test"
+	packageName := "github.com/timbasel/go-log/pkg/log_test"
 	functionName := "TestJSONFormatterPrettyPrint"
 	expectedFormat := "{\n\t\"function\": \"%s\",\n\t\"level\": \"%s\",\n\t\"msg\": \"%s\",\n\t\"package\": \"%s\",\n\t\"time\": \"%s\"\n}\n"
 

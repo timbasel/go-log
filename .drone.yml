@@ -5,5 +5,5 @@ steps:
 - name: test
   image: golang
   commands:
-  - cd pkg
+  - cd pkg/log
   - go test

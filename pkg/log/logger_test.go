@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	log "github.com/timbasel/go-log/pkg"
+	"github.com/timbasel/go-log/pkg/log"
 )
 
 func prepareTestLogger() (logger *log.Logger, output *strings.Builder) {
