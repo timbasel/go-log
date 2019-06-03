@@ -13,7 +13,8 @@ import (
 func prepareTestJSONFormatter() (formatter *log.JSONFormatter) {
 	formatter = log.NewJSONFormatter()
 	clock := clock.NewMock()
-	clock.Add(26*time.Hour + 4*time.Minute + 5*time.Second) // set timestamp to 1970-01-02T03:04:05+00:00
+	timestamp, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05+00:00")
+	clock.Set(timestamp)
 	formatter.Clock = clock
 	return formatter
 }
@@ -22,7 +23,7 @@ func TestJSONFormatter(t *testing.T) {
 	formatter := prepareTestJSONFormatter()
 
 	msg := "this is a test message"
-	timestamp := "1970-01-02T03:04:05+01:00"
+	timestamp := "2006-01-02T15:04:05Z"
 	packageName := "github.com/timbasel/go-log/pkg_test"
 	functionName := "TestJSONFormatter"
 	expectedFormat := "{\"function\":\"%s\",\"level\":\"%s\",\"msg\":\"%s\",\"package\":\"%s\",\"time\":\"%s\"}\n"
@@ -73,7 +74,7 @@ func TestJSONFormatterDisabledCaller(t *testing.T) {
 	formatter.CallerDisabled = true
 
 	msg := "this is a test message"
-	timestamp := "1970-01-02T03:04:05+01:00"
+	timestamp := "2006-01-02T15:04:05Z"
 	expectedFormat := "{\"level\":\"%s\",\"msg\":\"%s\",\"time\":\"%s\"}\n"
 
 	testCases := []struct {
@@ -97,7 +98,7 @@ func TestJSONFormatterPrettyPrint(t *testing.T) {
 	formatter.PrettyPrint = true
 
 	msg := "this is a test message"
-	timestamp := "1970-01-02T03:04:05+01:00"
+	timestamp := "2006-01-02T15:04:05Z"
 	packageName := "github.com/timbasel/go-log/pkg_test"
 	functionName := "TestJSONFormatterPrettyPrint"
 	expectedFormat := "{\n\t\"function\": \"%s\",\n\t\"level\": \"%s\",\n\t\"msg\": \"%s\",\n\t\"package\": \"%s\",\n\t\"time\": \"%s\"\n}\n"

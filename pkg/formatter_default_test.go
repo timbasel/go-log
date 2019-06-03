@@ -14,7 +14,8 @@ func prepareTestDefaultFormatter() (formatter *log.DefaultFormatter) {
 	formatter = log.NewDefaultFormatter()
 	formatter.ColorsDisabled = true
 	clock := clock.NewMock()
-	clock.Add(26*time.Hour + 4*time.Minute + 5*time.Second) // set timestamp to 1970-01-02T03:04:05+00:00
+	timestamp, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05+01:00")
+	clock.Set(timestamp)
 	formatter.Clock = clock
 	return formatter
 }
@@ -23,7 +24,7 @@ func TestDefaultFormatter(t *testing.T) {
 	formatter := prepareTestDefaultFormatter()
 
 	msg := "this is a test message"
-	timestamp := "1970-01-02 03:04:05"
+	timestamp := "2006-01-02 15:04:05"
 	caller := "pkg_test.TestDefaultFormatter"
 
 	testCases := []struct {
@@ -70,7 +71,7 @@ func TestDefaultFormatterDisabledCaller(t *testing.T) {
 	formatter.CallerDisabled = true
 
 	msg := "this is a test message"
-	timestamp := "1970-01-02 03:04:05"
+	timestamp := "2006-01-02 15:04:05"
 
 	testCases := []struct {
 		level    log.Level
@@ -94,7 +95,7 @@ func TestDefaultFormatterCustomTimestamp(t *testing.T) {
 
 	msg := "this is a test message"
 	caller := "pkg_test.TestDefaultFormatterCustomTimestamp"
-	timestamp := "Fri Jan 02 03:04:05 1970"
+	timestamp := "Mon Jan 02 15:04:05 2006"
 
 	testCases := []struct {
 		level    log.Level
