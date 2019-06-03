@@ -43,7 +43,7 @@ func (f *JSONFormatter) Format(level Level, msg string) (formattedMsg string) {
 	buffer := &strings.Builder{}
 	encoder := json.NewEncoder(buffer)
 	if f.PrettyPrint {
-		encoder.SetIndent("", "  ")
+		encoder.SetIndent("", "\t")
 	}
 	if err := encoder.Encode(entries); err != nil {
 		return ""
