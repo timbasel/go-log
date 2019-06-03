@@ -33,8 +33,8 @@ func (f *JSONFormatter) Format(level Level, msg string) (formattedMsg string) {
 	}
 
 	if !f.CallerDisabled {
-		entries["package"] = getPackageName()
-		entries["function"] = getFunctionName()
+		entries["package"] = getCallersPackageName()
+		entries["function"] = getCallersFunctionName()
 	}
 
 	entries["level"] = level.String()

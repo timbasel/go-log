@@ -11,7 +11,7 @@ func getTimestamp(clock clock.Clock, layout string) (timestamp string) {
 	return clock.Now().Format(layout)
 }
 
-func getFullFunctionName() (name string) {
+func getCallersFullFunctionName() (name string) {
 	functionName, packageName := findInitialCaller()
 	if functionName == "" || packageName == "" {
 		return ""
@@ -21,7 +21,7 @@ func getFullFunctionName() (name string) {
 	return packageName[index+1:] + "." + functionName
 }
 
-func getFunctionName() (name string) {
+func getCallersFunctionName() (name string) {
 	functionName, _ := findInitialCaller()
 	if functionName == "" {
 		return ""
@@ -30,7 +30,7 @@ func getFunctionName() (name string) {
 	return functionName
 }
 
-func getPackageName() (name string) {
+func getCallersPackageName() (name string) {
 	_, packageName := findInitialCaller()
 	if packageName == "" {
 		return ""

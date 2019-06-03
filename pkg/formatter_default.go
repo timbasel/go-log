@@ -41,7 +41,7 @@ func (f *DefaultFormatter) Format(level Level, msg string) (formattedMsg string)
 
 	if !f.CallerDisabled {
 		entry.WriteString("<")
-		entry.WriteString(getFullFunctionName())
+		entry.WriteString(getCallersFullFunctionName())
 		entry.WriteString("> ")
 	}
 
