@@ -83,3 +83,8 @@ func Debug(msg ...string) {
 func Debugf(format string, arguments ...interface{}) {
 	globalLogger.Debugf(format, arguments...)
 }
+
+// XDebug disables the Debug function
+func XDebug(msg ...string) {}
+
+// XDebugf disables the Debugf function

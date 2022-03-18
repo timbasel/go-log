@@ -10,8 +10,8 @@ import (
 	"github.com/timbasel/go-log/pkg/log"
 )
 
-func prepareTestJSONFormatter() (formatter *log.JSONFormatter) {
-	formatter = log.NewJSONFormatter()
+func prepareTestJSONFormatter() *log.JSONFormatter {
+	formatter := log.NewJSONFormatter()
 	clock := clock.NewMock()
 	timestamp, _ := time.Parse(time.RFC3339, "2006-01-02T15:04:05+00:00")
 	clock.Set(timestamp)

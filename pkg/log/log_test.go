@@ -9,6 +9,8 @@ import (
 )
 
 func ExampleBasic() {
+	log.SetDebugMode(true)
+
 	// message for the developer debugging the application
 	log.Debug("debug message")
 
@@ -18,6 +20,8 @@ func ExampleBasic() {
 	// message in case the application encountered an unhandleable error and will terminate after messaging
 	// this should effectively only be used in the main.main function after bubbling up the unhandled error
 	log.Error("error message")
+
+	// Output:
 }
 
 func ExampleConfiguration() {

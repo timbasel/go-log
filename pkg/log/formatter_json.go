@@ -18,7 +18,7 @@ type JSONFormatter struct {
 }
 
 // NewJSONFormatter initializes a new JSONFormatter
-func NewJSONFormatter() (f *JSONFormatter) {
+func NewJSONFormatter() *JSONFormatter {
 	return &JSONFormatter{
 		TimestampLayout: time.RFC3339,
 		Clock:           clock.New(),
@@ -26,7 +26,7 @@ func NewJSONFormatter() (f *JSONFormatter) {
 }
 
 // Format formats a single log message
-func (f *JSONFormatter) Format(level Level, msg string) (formattedMsg string) {
+func (f *JSONFormatter) Format(level Level, msg string) string {
 	entries := map[string]string{}
 
 	if !f.TimestampDisabled {

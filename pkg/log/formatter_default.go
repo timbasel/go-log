@@ -1,6 +1,7 @@
 package log
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/benbjohnson/clock"
@@ -21,9 +22,9 @@ type DefaultFormatter struct {
 func NewDefaultFormatter() (f *DefaultFormatter) {
 	return &DefaultFormatter{
 		Colors: map[Level]color.Style{
-			DebugLevel: color.New(color.FgLightCyan),
-			InfoLevel:  color.New(color.FgLightWhite),
-			ErrorLevel: color.New(color.FgLightRed),
+			DebugLevel: color.New(color.BgGray, color.FgWhite),
+			InfoLevel:  color.New(color.BgWhite, color.Black),
+			ErrorLevel: color.New(color.BgRed, color.FgWhite),
 		},
 		TimestampLayout: "2006-01-02 15:04:05",
 		Clock:           clock.New(),
@@ -45,13 +46,16 @@ func (f *DefaultFormatter) Format(level Level, msg string) (formattedMsg string)
 		entry.WriteString("> ")
 	}
 
-	entry.WriteString(level.String())
+	if f.ColorsDisabled {
+		entry.WriteString(level.String())
+	} else {
+		entry.WriteString(f.Colors[level].Render(center(level.String(), 9)))
+	}
 	entry.WriteString(":\t")
 
-	if f.ColorsDisabled {
-		formattedMsg = entry.String() + msg + "\n"
-	} else {
-		formattedMsg = f.Colors[level].Render(entry.String()) + msg + "\n"
-	}
-	return formattedMsg
+	return entry.String() + msg + "\n"
+}
+
+func center(s string, w int) string {
+	return fmt.Sprintf("%*s", -w, fmt.Sprintf("%*s", (w+len(s))/2, s))
 }

@@ -171,6 +171,12 @@ func (logger *Logger) Debugf(format string, arguments ...interface{}) {
 	}
 }
 
+// XDebug disables the Debug method
+func (logger *Logger) XDebug(msg ...string) {}
+
+// XDebugf disables the Debugf method
+func (logger *Logger) XDebugf(format string, arguments ...interface{}) {}
+
 func (logger *Logger) write(level Level, msg string) {
 	for writer, formatter := range logger.outputs {
 		writer.Write([]byte(formatter.Format(level, msg)))
