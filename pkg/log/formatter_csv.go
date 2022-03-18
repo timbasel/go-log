@@ -5,20 +5,22 @@ import (
 	"strings"
 	"time"
 
+	"github.com/acarl005/stripansi"
 	"github.com/benbjohnson/clock"
 )
 
 // CSVFormatter formats the log to csv lines with timestamp, package, function, log level and message
 type CSVFormatter struct {
+	ColorsDisabled    bool
 	TimestampDisabled bool
 	TimestampLayout   string
 	Clock             clock.Clock
 	CallerDisabled    bool
-	PrettyPrint       bool
 }
 
 func NewCSVFormatter() *CSVFormatter {
 	return &CSVFormatter{
+		ColorsDisabled:  true,
 		TimestampLayout: time.RFC3339,
 		Clock:           clock.New(),
 	}
@@ -37,7 +39,11 @@ func (f *CSVFormatter) Format(level Level, msg string) string {
 	}
 
 	entries = append(entries, level.String())
-	entries = append(entries, msg)
+	if f.ColorsDisabled {
+		entries = append(entries, stripansi.Strip(msg))
+	} else {
+		entries = append(entries, msg)
+	}
 
 	buffer := &strings.Builder{}
 	writer := csv.NewWriter(buffer)

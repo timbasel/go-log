@@ -5,11 +5,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/acarl005/stripansi"
 	"github.com/benbjohnson/clock"
 )
 
 // JSONFormatter formats log to json objects with timestamp, function, package and log level
 type JSONFormatter struct {
+	ColorsDisabled    bool
 	TimestampDisabled bool
 	TimestampLayout   string
 	Clock             clock.Clock
@@ -20,6 +22,7 @@ type JSONFormatter struct {
 // NewJSONFormatter initializes a new JSONFormatter
 func NewJSONFormatter() *JSONFormatter {
 	return &JSONFormatter{
+		ColorsDisabled:  true,
 		TimestampLayout: time.RFC3339,
 		Clock:           clock.New(),
 	}
@@ -39,7 +42,11 @@ func (f *JSONFormatter) Format(level Level, msg string) string {
 	}
 
 	entries["level"] = level.String()
-	entries["msg"] = msg
+	if f.CallerDisabled {
+		entries["msg"] = stripansi.Strip(msg)
+	} else {
+		entries["msg"] = msg
+	}
 
 	buffer := &strings.Builder{}
 	encoder := json.NewEncoder(buffer)

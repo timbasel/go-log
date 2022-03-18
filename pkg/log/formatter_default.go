@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/acarl005/stripansi"
 	"github.com/benbjohnson/clock"
 	"github.com/gookit/color"
 )
@@ -52,6 +53,10 @@ func (f *DefaultFormatter) Format(level Level, msg string) (formattedMsg string)
 		entry.WriteString(f.Colors[level].Render(center(level.String(), 9)))
 	}
 	entry.WriteString(":\t")
+
+	if f.ColorsDisabled {
+		msg = stripansi.Strip(msg)
+	}
 
 	return entry.String() + msg + "\n"
 }
