@@ -41,18 +41,18 @@ func (f *DefaultFormatter) Format(level Level, msg string) (formattedMsg string)
 		entry.WriteString(" ")
 	}
 
-	if !f.CallerDisabled {
-		entry.WriteString("<")
-		entry.WriteString(getCallersFullFunctionName())
-		entry.WriteString("> ")
-	}
-
 	if f.ColorsDisabled {
 		entry.WriteString(level.String())
 	} else {
 		entry.WriteString(f.Colors[level].Render(center(level.String(), 9)))
 	}
-	entry.WriteString(":\t")
+
+	if !f.CallerDisabled {
+		entry.WriteString(" <")
+		entry.WriteString(getCallersFullFunctionName())
+		entry.WriteString(">")
+	}
+	entry.WriteString(": ")
 
 	if f.ColorsDisabled {
 		msg = stripansi.Strip(msg)

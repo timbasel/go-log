@@ -1,6 +1,7 @@
 package log_test
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -26,14 +27,15 @@ func TestDefaultFormatter(t *testing.T) {
 	msg := "this is a test message"
 	timestamp := "2006-01-02 15:04:05"
 	caller := "log_test.TestDefaultFormatter"
+	expectedFormat := "%s %s <%s>: %s\n"
 
 	testCases := []struct {
 		level    log.Level
 		expected string
 	}{
-		{log.ErrorLevel, timestamp + " <" + caller + "> ERROR:\t" + msg + "\n"},
-		{log.InfoLevel, timestamp + " <" + caller + "> INFO:\t" + msg + "\n"},
-		{log.DebugLevel, timestamp + " <" + caller + "> DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, fmt.Sprintf(expectedFormat, timestamp, "ERROR", caller, msg)},
+		{log.InfoLevel, fmt.Sprintf(expectedFormat, timestamp, "INFO", caller, msg)},
+		{log.DebugLevel, fmt.Sprintf(expectedFormat, timestamp, "DEBUG", caller, msg)},
 	}
 
 	for _, testCase := range testCases {
@@ -49,14 +51,15 @@ func TestDefaultFormatterDisabledTimestamp(t *testing.T) {
 
 	msg := "this is a test message"
 	caller := "log_test.TestDefaultFormatterDisabledTimestamp"
+	expectedFormat := "%s <%s>: %s\n"
 
 	testCases := []struct {
 		level    log.Level
 		expected string
 	}{
-		{log.ErrorLevel, "<" + caller + "> ERROR:\t" + msg + "\n"},
-		{log.InfoLevel, "<" + caller + "> INFO:\t" + msg + "\n"},
-		{log.DebugLevel, "<" + caller + "> DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, fmt.Sprintf(expectedFormat, "ERROR", caller, msg)},
+		{log.InfoLevel, fmt.Sprintf(expectedFormat, "INFO", caller, msg)},
+		{log.DebugLevel, fmt.Sprintf(expectedFormat, "DEBUG", caller, msg)},
 	}
 
 	for _, testCase := range testCases {
@@ -72,14 +75,15 @@ func TestDefaultFormatterDisabledCaller(t *testing.T) {
 
 	msg := "this is a test message"
 	timestamp := "2006-01-02 15:04:05"
+	expectedFormat := "%s %s: %s\n"
 
 	testCases := []struct {
 		level    log.Level
 		expected string
 	}{
-		{log.ErrorLevel, timestamp + " ERROR:\t" + msg + "\n"},
-		{log.InfoLevel, timestamp + " INFO:\t" + msg + "\n"},
-		{log.DebugLevel, timestamp + " DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, fmt.Sprintf(expectedFormat, timestamp, "ERROR", msg)},
+		{log.InfoLevel, fmt.Sprintf(expectedFormat, timestamp, "INFO", msg)},
+		{log.DebugLevel, fmt.Sprintf(expectedFormat, timestamp, "DEBUG", msg)},
 	}
 
 	for _, testCase := range testCases {
@@ -96,14 +100,15 @@ func TestDefaultFormatterCustomTimestamp(t *testing.T) {
 	msg := "this is a test message"
 	caller := "log_test.TestDefaultFormatterCustomTimestamp"
 	timestamp := "Mon Jan 02 15:04:05 2006"
+	expectedFormat := "%s %s <%s>: %s\n"
 
 	testCases := []struct {
 		level    log.Level
 		expected string
 	}{
-		{log.ErrorLevel, timestamp + " <" + caller + "> ERROR:\t" + msg + "\n"},
-		{log.InfoLevel, timestamp + " <" + caller + "> INFO:\t" + msg + "\n"},
-		{log.DebugLevel, timestamp + " <" + caller + "> DEBUG:\t" + msg + "\n"},
+		{log.ErrorLevel, fmt.Sprintf(expectedFormat, timestamp, "ERROR", caller, msg)},
+		{log.InfoLevel, fmt.Sprintf(expectedFormat, timestamp, "INFO", caller, msg)},
+		{log.DebugLevel, fmt.Sprintf(expectedFormat, timestamp, "DEBUG", caller, msg)},
 	}
 
 	for _, testCase := range testCases {

@@ -33,12 +33,13 @@ func (f *CSVFormatter) Format(level Level, msg string) string {
 		entries = append(entries, getTimestamp(f.Clock, f.TimestampLayout))
 	}
 
+	entries = append(entries, level.String())
+
 	if !f.CallerDisabled {
 		entries = append(entries, getCallersPackageName())
 		entries = append(entries, getCallersFunctionName())
 	}
 
-	entries = append(entries, level.String())
 	if f.ColorsDisabled {
 		entries = append(entries, stripansi.Strip(msg))
 	} else {

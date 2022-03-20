@@ -33,9 +33,9 @@ func TestCSVFormatter(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.ErrorLevel, fmt.Sprintf(expectedFormat, timestamp, packageName, functionName, "ERROR", msg)},
-		{log.InfoLevel, fmt.Sprintf(expectedFormat, timestamp, packageName, functionName, "INFO", msg)},
-		{log.DebugLevel, fmt.Sprintf(expectedFormat, timestamp, packageName, functionName, "DEBUG", msg)},
+		{log.ErrorLevel, fmt.Sprintf(expectedFormat, timestamp, "ERROR", packageName, functionName, msg)},
+		{log.InfoLevel, fmt.Sprintf(expectedFormat, timestamp, "INFO", packageName, functionName, msg)},
+		{log.DebugLevel, fmt.Sprintf(expectedFormat, timestamp, "DEBUG", packageName, functionName, msg)},
 	}
 
 	for _, testCase := range testCases {
@@ -58,9 +58,9 @@ func TestCSVFormatterDisabledTimestamp(t *testing.T) {
 		level    log.Level
 		expected string
 	}{
-		{log.ErrorLevel, fmt.Sprintf(expectedFormat, packageName, functionName, "ERROR", msg)},
-		{log.InfoLevel, fmt.Sprintf(expectedFormat, packageName, functionName, "INFO", msg)},
-		{log.DebugLevel, fmt.Sprintf(expectedFormat, packageName, functionName, "DEBUG", msg)},
+		{log.ErrorLevel, fmt.Sprintf(expectedFormat, "ERROR", packageName, functionName, msg)},
+		{log.InfoLevel, fmt.Sprintf(expectedFormat, "INFO", packageName, functionName, msg)},
+		{log.DebugLevel, fmt.Sprintf(expectedFormat, "DEBUG", packageName, functionName, msg)},
 	}
 
 	for _, testCase := range testCases {
